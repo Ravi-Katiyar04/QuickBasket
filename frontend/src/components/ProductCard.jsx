@@ -4,7 +4,6 @@ import { assets } from '../assets/assets'
 import { useAppCOntext } from '../context/AppContext';
 
 const ProductCard = ({ product }) => {
-    const [count, setCount] = useState(0);
     const {currency, addToCard, cartItems, removeFromCart, navigate}= useAppCOntext();
 
     return product && (
