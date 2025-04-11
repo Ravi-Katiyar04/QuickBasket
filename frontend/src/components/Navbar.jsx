@@ -38,7 +38,9 @@ const Navbar = () => {
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">3</button>
                 </div>
 
-                {!user ? (<button className="cursor-pointer px-8 py-2 bg-primary hover:bg-indigo-600 transition text-white rounded-full">
+                {!user ? (<button
+                onClick={() => setShowUserLogin(true)}
+                 className="cursor-pointer px-8 py-2 bg-primary hover:bg-indigo-600 transition text-white rounded-full">
                     Login
                 </button>)
                 :
