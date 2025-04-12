@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAppCOntext } from '../context/AppContext'
 import {assets} from '../assets/assets'
+import ProductCard from '../components/ProductCard'
 
 const ProductDetails = () => {
 
@@ -83,6 +84,24 @@ const ProductDetails = () => {
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div className="mt-20">
+                <div className="flex items-center justify-center">
+                    <p className="text-3xl font-medium mx-auto">Related Products</p>
+                </div>
+                <div className="mx-auto w-16 h-1 bg-primary rounded-full mb-6"></div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 md:gap-5 lg:grid-cols-5 lg:gap-6 mt-12">
+                    {relatedProducts.filter((product) => product.inStock).map((product, index) => (
+                        <ProductCard key={index} product={product} />
+                    ))}            
+                </div>    
+            </div> 
+
+            <div className="flex justify-center mt-6">
+                <button onClick={() => {navigate("/products"); scrollTo(0, 0);}} className="mx-auto cursor-pointer px-12 my-10 py-2.5 border rounded text-primary bg-primary/40 hover:bg-primary hover:text-white transition">
+                    See more
+                </button>
             </div>
         </div>
     );
