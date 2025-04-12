@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
     const [searchQuery, setSearchQuery] = useState({})
 
 
-    const getCardCount = () => {
+    const getCartCount = () => {
         let count = 0;
         for (const items in cartItems) {
             count += cartItems[items];
@@ -94,7 +94,7 @@ export const AppContextProvider = ({ children }) => {
         cartItems,
         searchQuery,
         setSearchQuery, 
-        getCardCount,
+        getCartCount,
         getTotalPrice,
 
     };
