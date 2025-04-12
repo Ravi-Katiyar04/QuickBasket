@@ -6,7 +6,7 @@ import { useAppCOntext } from '../context/AppContext'
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
-    const { user, setUser , setShowUserLogin, navigate, setSearchQuery, searchQuery} = useAppCOntext()
+    const { user, setUser, setShowUserLogin, navigate, setSearchQuery, searchQuery, getCardCount } = useAppCOntext()
 
     const handleLogout = () => {
         setUser(null)
@@ -14,10 +14,10 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-            if(searchQuery.length > 0){
-                navigate('/products')
-            }
-        
+        if (searchQuery.length > 0) {
+            navigate('/products')
+        }
+
     }, [searchQuery]);
 
     return (
@@ -40,31 +40,42 @@ const Navbar = () => {
 
                 <div onClick={() => navigate("/cart")} className="relative cursor-pointer">
                     <img src={assets.nav_cart_icon} alt="Cart" className='w-6  opacity-80' />
-                    <button className="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">3</button>
+                    <button className="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">{getCardCount()}</button>
                 </div>
 
                 {!user ? (<button
-                onClick={() => setShowUserLogin(true)}
-                 className="cursor-pointer px-8 py-2 bg-primary hover:bg-indigo-600 transition text-white rounded-full">
+                    onClick={() => setShowUserLogin(true)}
+                    className="cursor-pointer px-8 py-2 bg-primary hover:bg-indigo-600 transition text-white rounded-full">
                     Login
                 </button>)
-                :
-                (
-                    <div className="relative group">
-                        <img src={assets.profile_icon} alt="UserProfile" className='w-10 rounded-full' />
-                        <ul className="hidden group-hover:block absolute top-10 right-0 bg-white shadow-md border-gray-200 py-2 rounded-md text-sm w-32 z-40">
-                            <li onClick={() => navigate('/my-order')} className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my orders</li>
-                            {/* <li className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my profile</li> */}
-                            <li onClick={handleLogout} className="hover:bg-gray-100 py-2 px-4 block cursor-pointer">logout</li>
-                        </ul>  
-                    </div>
-                )}
+                    :
+                    (
+                        <div className="relative group">
+                            <img src={assets.profile_icon} alt="UserProfile" className='w-10 rounded-full' />
+                            <ul className="hidden group-hover:block absolute top-10 right-0 bg-white shadow-md border-gray-200 py-2 rounded-md text-sm w-32 z-40">
+                                <li onClick={() => navigate('/my-order')} className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my orders</li>
+                                {/* <li className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my profile</li> */}
+                                <li onClick={handleLogout} className="hover:bg-gray-100 py-2 px-4 block cursor-pointer">logout</li>
+                            </ul>
+                        </div>
+                    )}
             </div>
 
-            <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="sm:hidden">
-                {/* Menu Icon SVG */}
-                <img src={assets.menu_icon} alt="menu" />
-            </button>
+            <div className="flex items-center gap-6 sm:hidden">
+
+                <div onClick={() => navigate("/cart")} className="relative cursor-pointer">
+                    <img src={assets.nav_cart_icon} alt="Cart" className='w-6  opacity-80' />
+                    <button className="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">{getCardCount()}</button>
+                </div>
+
+                <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="cursor-pointer">
+                    {/* Menu Icon SVG */}
+                    <img src={assets.menu_icon} alt="menu" />
+                </button>
+
+            </div>
+
+
 
             {/* Mobile Menu */}
             {open && (<div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden z-30`}>
@@ -75,7 +86,7 @@ const Navbar = () => {
                 }
                 <NavLink to="/contact" onClick={() => setOpen(false)} className="block">Contact</NavLink>
                 {!user ?
-                    (<button onClick={() => {setOpen(false); setShowUserLogin(true);}} className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
+                    (<button onClick={() => { setOpen(false); setShowUserLogin(true); }} className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
                         Login
                     </button>)
                     :

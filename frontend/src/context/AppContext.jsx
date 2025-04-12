@@ -19,6 +19,23 @@ export const AppContextProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({})
     const [searchQuery, setSearchQuery] = useState({})
 
+
+    const getCardCount = () => {
+        let count = 0;
+        for (const items in cartItems) {
+            count += cartItems[items];
+        }
+        return count;
+    }
+
+    const getTotalPrice = () => {
+        let totalAmount = 0;
+        for (const items in cartItems) {
+            totalAmount += cartItems[items] * products.find((product) => product._id === items).offerPrice;
+        }
+        return Math.floor(totalAmount * 100) / 100;
+    }
+
     const fetchProducts = async () => {
         setProducts(dummyProducts);
     }
@@ -76,7 +93,10 @@ export const AppContextProvider = ({ children }) => {
         removeFromCart,
         cartItems,
         searchQuery,
-        setSearchQuery,
+        setSearchQuery, 
+        getCardCount,
+        getTotalPrice,
+
     };
 
     return (
