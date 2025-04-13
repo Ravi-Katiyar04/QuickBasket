@@ -53,7 +53,7 @@ const Navbar = () => {
                         <div className="relative group">
                             <img src={assets.profile_icon} alt="UserProfile" className='w-10 rounded-full' />
                             <ul className="hidden group-hover:block absolute top-10 right-0 bg-white shadow-md border-gray-200 py-2 rounded-md text-sm w-32 z-40">
-                                <li onClick={() => navigate('/my-order')} className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my orders</li>
+                                <li onClick={() => navigate('/my-orders')} className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my orders</li>
                                 {/* <li className="hover:bg-gray-200 py-2 px-4 block cursor-pointer">my profile</li> */}
                                 <li onClick={handleLogout} className="hover:bg-gray-100 py-2 px-4 block cursor-pointer">logout</li>
                             </ul>
