@@ -52,7 +52,7 @@ export const AppContextProvider = ({ children }) => {
         toast.success("added to cart");
     }
 
-    const updateCardItems = () => {
+    const updateCardItems = (itemId, quantity) => {
         let cardData= structuredClone(cartItems);
         cardData[itemId] = quantity;
         setCartItems(cardData);
