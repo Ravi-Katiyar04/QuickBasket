@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyProducts } from "../assets/assets";
 import toast from "react-hot-toast";
+import { dummyAddress } from "../assets/assets";
 
 // Create a context for the app
 // This context will be used to share state and functions across the application
@@ -96,7 +97,6 @@ export const AppContextProvider = ({ children }) => {
         setSearchQuery, 
         getCartCount,
         getTotalPrice,
-
     };
 
     return (
