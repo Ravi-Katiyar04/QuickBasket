@@ -1,11 +1,16 @@
 import React from 'react'
-
+import { useState } from 'react';
+import { dummyProducts } from '../../assets/assets';
+import { useAppCOntext } from '../../context/AppContext';
 const ProductList = () => {
-    const products = [
-        { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: true, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png", },
-        { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: false, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage2.png", },
-        { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: true, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage3.png", },
-    ];
+    // const products = [
+    //     { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: true, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png", },
+    //     { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: false, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage2.png", },
+    //     { name: "Casual Shoes", category: "Shoes", offerPrice: 999, inStock: true, image: "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage3.png", },
+    // ];
+
+    const [products, setProducts] = useState(dummyProducts);
+    const {currency}= useAppCOntext();
 
     return (
         <div className="flex-1 py-10 flex flex-col justify-between">
@@ -22,16 +27,16 @@ const ProductList = () => {
                             </tr>
                         </thead>
                         <tbody className="text-sm text-gray-500">
-                            {products.map((product, index) => (
-                                <tr key={index} className="border-t border-gray-500/20">
+                            {products.map((product) => (
+                                <tr key={product._id} className="border-t border-gray-500/20">
                                     <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
                                         <div className="border border-gray-300 rounded p-2">
-                                            <img src={product.image} alt="Product" className="w-16" />
+                                            <img src={product.image[0]} alt="Product" className="w-16" />
                                         </div>
                                         <span className="truncate max-sm:hidden w-full">{product.name}</span>
                                     </td>
                                     <td className="px-4 py-3">{product.category}</td>
-                                    <td className="px-4 py-3 max-sm:hidden">${product.offerPrice}</td>
+                                    <td className="px-4 py-3 max-sm:hidden">{currency}{product.offerPrice}</td>
                                     <td className="px-4 py-3">
                                         <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
                                             <input type="checkbox" className="sr-only peer" defaultChecked={product.inStock} />
