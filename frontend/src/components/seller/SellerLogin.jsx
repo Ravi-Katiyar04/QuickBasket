@@ -22,7 +22,7 @@ const SellerLogin = () => {
     
 
     return !isSellar && (
-        <div className='fixed top-0 bottom-0 left--0 w-full left-0 z-30 flex items-center text-sm text-gray-600 bg-black/50'>
+        <div className='fixed top-0 bottom-0 left--0 w-full left-0 z-30 flex items-center text-sm text-gray-600 bg-slate-300'>
             <form onSubmit={onSubmitHandler} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white">
                 <p className="text-2xl font-medium m-auto">
                     <span className="text-primary">Seller</span> {state === "login" ? "Login" : "Sign Up"}
