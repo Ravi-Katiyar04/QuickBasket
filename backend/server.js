@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors'
 import connectDB from './configs/db.js';
 import 'dotenv/config';// Load environment variables from .env file
+import userRouter from './routes/UserRoute.js'; // Import the user router
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -20,6 +21,8 @@ app.use(cors({ origin: allowedOrigins, credentials: true })); // Allow requests 
 app.get('/', (req, res) => {
     res.send(`Hello World! This is the backend server.`);
 });
+
+app.use('/api/users', userRouter); // Use the user router for user-related routes
 
 
 app.listen(port, () => {
