@@ -7,6 +7,7 @@ import userRouter from './routes/userRoute.js'; // Import the user router
 import connectCloudinary from './configs/cloudinary.js'; // Import the Cloudinary configuration
 import sellerRouter from './routes/sellerRoute.js'; // Import the seller router
 import productRouter from './routes/productRoute.js'; // Import the product router
+import cartRouter from './routes/cartRoute.js'; // Import the cart router
 
 
 
@@ -34,6 +35,8 @@ app.use('/api/users', userRouter); // Use the user router for user-related route
 app.use('/api/seller', sellerRouter); // Use the seller router for seller-related routes
 
 app.use('/api/product', productRouter); // Use the product router for product-related routes
+
+app.use('/api/cart', cartRouter); // Use the cart router for cart-related routes
 
 
 app.listen(port, () => {
