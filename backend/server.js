@@ -4,8 +4,9 @@ import cors from 'cors'
 import connectDB from './configs/db.js';
 import 'dotenv/config';// Load environment variables from .env file
 import userRouter from './routes/userRoute.js'; // Import the user router
-
+import connectCloudinary from './configs/cloudinary.js'; // Import the Cloudinary configuration
 import sellerRouter from './routes/sellerRoute.js'; // Import the seller router
+import productRouter from './routes/productRoute.js'; // Import the product router
 
 
 
@@ -13,6 +14,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 await connectDB(); // Connect to MongoDB
+await connectCloudinary(); // Connect to Cloudinary
 
 const allowedOrigins = [
     'http://localhost:5173', // React frontend
@@ -30,6 +32,8 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRouter); // Use the user router for user-related routes
 
 app.use('/api/seller', sellerRouter); // Use the seller router for seller-related routes
+
+app.use('/api/product', productRouter); // Use the product router for product-related routes
 
 
 app.listen(port, () => {
