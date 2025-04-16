@@ -3,7 +3,9 @@ import express from 'express';
 import cors from 'cors'
 import connectDB from './configs/db.js';
 import 'dotenv/config';// Load environment variables from .env file
-import userRouter from './routes/UserRoute.js'; // Import the user router
+import userRouter from './routes/userRoute.js'; // Import the user router
+
+import sellerRouter from './routes/sellerRoute.js'; // Import the seller router
 
 
 
@@ -26,6 +28,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter); // Use the user router for user-related routes
+
+app.use('/api/seller', sellerRouter); // Use the seller router for seller-related routes
 
 
 app.listen(port, () => {

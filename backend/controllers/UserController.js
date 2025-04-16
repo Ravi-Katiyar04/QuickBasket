@@ -93,7 +93,7 @@ export const isAuthenticated = async (req, res) => {
 
 export const logout= async (req, res) => {
     try {
-        res.cookie("token", null, {
+        res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite:process.env.NODE_ENV === "production" ? "none" : "strict",

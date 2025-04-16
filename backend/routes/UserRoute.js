@@ -3,7 +3,6 @@ const userRouter = express.Router();
 import { registerUser, loginUser, logout,isAuthenticated } from "../controllers/UserController.js";
 import authUser  from "../middlewares/authUser.js";
 
-userRouter.use(express.json());
 
 userRouter.post("/register", registerUser);
 
