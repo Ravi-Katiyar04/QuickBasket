@@ -48,13 +48,13 @@ export const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(400).json({ message: "Invalid credentials" });
+            return res.status(400).json({ message: "Invalid email or password" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(400).json({ message: "Invalid password" });
+            return res.status(400).json({ message: "Invalid email or password" });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "24h",
@@ -70,5 +70,38 @@ export const loginUser = async (req, res) => {
     } catch (error) {
         console.error("Error logging in:", error.message);
         res.status(500).json({ message: "Error logging in", error });
+    }
+}
+
+
+export const isAuthenticated = async (req, res) => {
+    try {
+        const {userId} = req; 
+        // console.log("User ID from request body:", userId); // Log the userId for debugging
+        const user = await User.findById(userId).select("-password"); // Exclude password from the response
+        if (!user) {
+            return res.status(401).json({ message: "Unauthorized User" });
+        }
+        return res.status(200).json({ message: "User is authenticated", user });
+
+    } catch (error) {
+        console.error("Error checking authentication:", error.message);
+        res.status(500).json({success: false, message:error.message });
+    }
+}
+
+
+export const logout= async (req, res) => {
+    try {
+        res.cookie("token", null, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite:process.env.NODE_ENV === "production" ? "none" : "strict",
+            expires: new Date(Date.now()),
+        });
+        return res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+        console.error("Error logging out:", error.message);
+        res.status(500).json({success:false, message: error.message });
     }
 }

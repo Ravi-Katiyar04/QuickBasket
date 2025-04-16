@@ -5,6 +5,8 @@ import connectDB from './configs/db.js';
 import 'dotenv/config';// Load environment variables from .env file
 import userRouter from './routes/UserRoute.js'; // Import the user router
 
+
+
 const app = express();
 const port = process.env.PORT || 4000;
 
@@ -14,7 +16,8 @@ const allowedOrigins = [
     'http://localhost:5173', // React frontend
 ];
 
-app.use(express.json());
+
+app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser());
 app.use(cors({ origin: allowedOrigins, credentials: true })); // Allow requests from the frontend
 
