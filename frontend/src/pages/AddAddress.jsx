@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import {assets} from "../assets/assets";
+import React, { useEffect, useState } from "react";
+import { assets } from "../assets/assets";
+import { useAppCOntext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddAddress = () => {
-  const [formData, setFormData] = useState({
+  const { axios, user, navigate } = useAppCOntext();
+  const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -11,19 +14,37 @@ const AddAddress = () => {
     state: "",
     zipcode: "",
     country: "",
-    mobile: "",
+    phone: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Address:", formData);
-    // Add API call or state update here
+    try {
+      const { data } = await axios.post("/api/address/add", { address
+      });
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/cart");
+      } else {
+        toast.error(data.message);
+      }
+
+    }catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to add address");
+      navigate("/cart");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen  w-full bg-white flex items-center justify-center md:gap-16 py-4 md:py-0">
@@ -34,7 +55,7 @@ const AddAddress = () => {
             type="text"
             name="firstName"
             placeholder="First Name"
-            value={formData.firstName}
+            value={address.firstName}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
@@ -43,7 +64,7 @@ const AddAddress = () => {
             type="text"
             name="lastName"
             placeholder="Last Name"
-            value={formData.lastName}
+            value={address.lastName}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
@@ -52,16 +73,16 @@ const AddAddress = () => {
             type="email"
             name="email"
             placeholder="Email"
-            value={formData.email}
+            value={address.email}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
           />
           <input
             type="tel"
-            name="mobile"
+            name="phone"
             placeholder="Mobile Number"
-            value={formData.mobile}
+            value={address.phone}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
@@ -70,7 +91,7 @@ const AddAddress = () => {
             type="text"
             name="street"
             placeholder="Street Address"
-            value={formData.street}
+            value={address.street}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 col-span-full"
             required
@@ -79,7 +100,7 @@ const AddAddress = () => {
             type="text"
             name="city"
             placeholder="City"
-            value={formData.city}
+            value={address.city}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
@@ -88,7 +109,7 @@ const AddAddress = () => {
             type="text"
             name="state"
             placeholder="State"
-            value={formData.state}
+            value={address.state}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required
@@ -97,7 +118,7 @@ const AddAddress = () => {
             type="text"
             name="zipcode"
             placeholder="Zip Code"
-            value={formData.zipcode}
+            value={address.zipcode}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 "
             required
@@ -106,7 +127,7 @@ const AddAddress = () => {
             type="text"
             name="country"
             placeholder="Country"
-            value={formData.country}
+            value={address.country}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-xl focus:border-indigo-500 focus:ring-indigo-500"
             required

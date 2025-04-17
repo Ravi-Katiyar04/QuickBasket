@@ -1,15 +1,16 @@
 import  { useState, useEffect} from 'react';
 import { useAppCOntext } from '../context/AppContext'
-import { dummyAddress } from '../assets/assets';
+// import { dummyAddress } from '../assets/assets';
 import {assets} from '../assets/assets';
+import toast from 'react-hot-toast';
 const Cart = () => {
     
-    const { getCartCount, getTotalPrice, cartItems, removeFromCart, updateCardItems, products,currency, navigate } = useAppCOntext();
+    const { getCartCount, getTotalPrice, cartItems, removeFromCart, updateCardItems, products,currency, navigate,axios, user } = useAppCOntext();
 
     const [cartArray, setCartArray] = useState([]);
-    const [addresses, setAddress] = useState(dummyAddress);
+    const [addresses, setAddress] = useState([]);
     const [showAddress, setShowAddress] = useState(false)
-    const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0]);
+    const [selectedAddress, setSelectedAddress] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState("COD");
 
     const getCart= () => {
@@ -22,12 +23,38 @@ const Cart = () => {
         setCartArray(tempArray);
     }
 
+    const getUserAddress = async() => {
+        try {
+            const { data } = await axios.get("/api/address/get");
+            if (data.success) {
+                setAddress(data.addresses);
+                if (data.addresses.length > 0) {
+                    setSelectedAddress(data.addresses[0]);
+                }
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message); 
+        }   
+    }
     const placeOrder =async () => {
-        if (cartArray.length === 0) {
-            alert("Cart is empty");
-            return;
-        }        
-        navigate("/checkout");
+        try {
+            if (!selectedAddress) {
+                return toast.error("Please select an address");
+            }
+            if(selectedPayment === "COD"){
+                const { data } = await axios.post("/api/order/place-order", { cartItems, selectedAddress, selectedPayment });
+                if (data.success) {
+                    toast.success(data.message);
+                    navigate("/order-success");
+                } else {
+                    toast.error(data.message);
+                }
+            }
+        } catch (error) {
+            toast.error(error.message); 
+        }
     }
 
     useEffect(() => {
@@ -35,6 +62,12 @@ const Cart = () => {
             getCart();
         }
     }, [cartItems, products]);
+
+    useEffect(() => {
+        if(user){
+            getUserAddress();
+        }
+    }, [user]);
 
     return products.length > 0 && cartItems ?(
         <div className="flex flex-col md:flex-row py-16 max-w-6xl w-full px-6 mx-auto">

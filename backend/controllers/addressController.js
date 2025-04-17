@@ -3,24 +3,23 @@ import Address from "../models/Address.js";
 
 export const addAddress = async (req, res) => {
     try {
-        const { address, userId } = req.body;
+        const { address } = req.body;
+        const {userId} = req;
 
         await Address.create({ ...address, userId });
-        return res.status(200).json({ message: "Address added successfully" });
+        return res.json({success: true, message: "Address added successfully" });
         
     } catch (error) {
-        console.error("Error adding address:", error.message);
-        return res.status(500).json({ message: "Error adding address", error });
+        return res.json({success: false, message: error.message });
     }
 }
 
 export const getAddress = async (req, res) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req;
         const addresses = await Address.find({ userId });
-        res.status(200).json(addresses);
+        res.status(200).json({success: true, addresses: addresses});
     } catch (error) {
-        console.error("Error fetching address:", error.message);
-        return res.status(500).json({ message: "Error fetching address", error });
+        return res.json({ success: false, message: error.message });
     }
 }

@@ -8,7 +8,7 @@ import authUser from '../middlewares/authUser.js'; // Import the authentication 
 // Route to add a new address
 addressRouter.post('/add', authUser, addAddress);
 // Route to get all addresses for a user
-addressRouter.post('/get', authUser, getAddress);
+addressRouter.get('/get', authUser, getAddress);
 
 
 
