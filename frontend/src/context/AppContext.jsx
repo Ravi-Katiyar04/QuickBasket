@@ -25,7 +25,23 @@ export const AppContextProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({})
     const [searchQuery, setSearchQuery] = useState({})
 
+    // Function to fetch the current user and set it in state
+    const fetchUser = async () => {
+        try {
+            const { data } = await axios.get("/api/users/is-authenticated");
+            if (data.success) {
+                setUser(data.user);
+                setCartItems(data.user.cartItems);
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            setUser(null);
+            console.error("Error fetching user authentication:", error.message);
+        }
+    }
 
+    // Function to fetch the current seller and set it in state
     const fetchSeller = async () => {
         try {
             const { data } = await axios.get("/api/seller/is-auth");
@@ -106,8 +122,10 @@ export const AppContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        fetchUser();
         fetchProducts();
         fetchSeller();
+        
     }, [])
     
     const value = {

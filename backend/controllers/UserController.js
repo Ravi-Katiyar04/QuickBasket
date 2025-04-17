@@ -6,13 +6,13 @@ export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if(!name || !email || !password) {
-        return res.status(400).json({success: false, message: "All fields are required" });
+        return res.json({success: false, message: "All fields are required" });
     }
 
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({success: false, message: "User already exists" });
+            return res.json({success: false, message: "User already exists" });
         }
 
         // Hash the password before saving it to the database
@@ -34,11 +34,11 @@ export const registerUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (1 day)
         });
        
-        return res.status(201).json({ message: "User registered successfully", user: { id: newUser._id, name: newUser.name, email: newUser.email} });
+        return res.status(201).json({success: true, message: "User registered successfully", user: { id: newUser._id, name: newUser.name, email: newUser.email} });
 
     } catch (error) {
         console.error("Error registering user:", error.message);
-        res.status(500).json({ message: "Error registering user", error });
+        res.json({ message: "Error registering user", error });
     }
 }
 
@@ -48,13 +48,13 @@ export const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(400).json({ message: "Invalid email or password" });
+            return res.json({success: false, message: "Invalid email or password" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(400).json({ message: "Invalid email or password" });
+            return res.json({success: false, message: "Invalid email or password" });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "24h",
@@ -66,10 +66,10 @@ export const loginUser = async (req, res) => {
             sameSite:process.env.NODE_ENV === "production" ? "none" : "strict",  // Prevents the cookie from being sent over insecure connections
             maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (1 day)
         });
-        return res.status(200).json({ message: "Login successful", user:{name: user.name, email: user.email} });
+        return res.json({success: true, message: "Login successful", user:{name: user.name, email: user.email} });
     } catch (error) {
         console.error("Error logging in:", error.message);
-        res.status(500).json({ message: "Error logging in", error });
+        res.json({success: false, message: "Error logging in", error });
     }
 }
 
@@ -80,13 +80,13 @@ export const isAuthenticated = async (req, res) => {
         // console.log("User ID from request body:", userId); // Log the userId for debugging
         const user = await User.findById(userId).select("-password"); // Exclude password from the response
         if (!user) {
-            return res.status(401).json({ message: "Unauthorized User" });
+            return res.json({success: false, message: "Unauthorized User" });
         }
-        return res.status(200).json({ message: "User is authenticated", user });
+        return res.json({success: true, message: "User is authenticated", user });
 
     } catch (error) {
         console.error("Error checking authentication:", error.message);
-        res.status(500).json({success: false, message:error.message });
+        res.json({success: false, message: error.message }); // Return a generic error messagesuccess: false, message:error.message });
     }
 }
 
