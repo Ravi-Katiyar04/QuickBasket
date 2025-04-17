@@ -7,7 +7,7 @@ const orderRouter = express.Router();
 
 
 // Route to create a new order
-orderRouter.post('/post', authUser, placedOrderCOD); 
+orderRouter.post('/cod', authUser, placedOrderCOD); 
 
 // Route to get all orders for a user
 orderRouter.get('/user', authUser, getUserOrders);
