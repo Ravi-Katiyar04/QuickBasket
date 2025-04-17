@@ -29,6 +29,7 @@ const Navbar = () => {
 
             {/* Desktop Menu */}
             <div className="hidden sm:flex items-center gap-8">
+                <NavLink className=" border-2 border-indigo-500 text-indigo-500 rounded-full px-4 py-1" to='/seller'>Seller Dashboard</NavLink>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/products">All Products</NavLink>
                 <NavLink to="/contact">Contact</NavLink>
@@ -85,6 +86,7 @@ const Navbar = () => {
                     <NavLink to="/my-order" onClick={() => setOpen(false)} className="block">My Order</NavLink>
                 }
                 <NavLink to="/contact" onClick={() => setOpen(false)} className="block">Contact</NavLink>
+                <NavLink className="border-2 border-indigo-500 text-indigo-500 rounded-full px-4 py-1 block" to="/seller" onClick={() => setOpen(false)} >Seller Dashboard</NavLink>
                 {!user ?
                     (<button onClick={() => { setOpen(false); setShowUserLogin(true); }} className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
                         Login
