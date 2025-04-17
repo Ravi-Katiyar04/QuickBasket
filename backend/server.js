@@ -9,6 +9,7 @@ import sellerRouter from './routes/sellerRoute.js'; // Import the seller router
 import productRouter from './routes/productRoute.js'; // Import the product router
 import cartRouter from './routes/cartRoute.js'; // Import the cart router
 import addressRouter from './routes/addressRoute.js'; // Import the address router
+import orderRouter from './routes/orderRoute.js'; // Import the order router
 
 
 
@@ -41,6 +42,7 @@ app.use('/api/cart', cartRouter); // Use the cart router for cart-related routes
 
 app.use('/api/address', addressRouter); // Use the address router for address-related routes
 
+app.use('/api/order', orderRouter); // Use the order router for order-related routes
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
