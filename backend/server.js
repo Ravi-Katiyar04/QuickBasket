@@ -8,6 +8,7 @@ import connectCloudinary from './configs/cloudinary.js'; // Import the Cloudinar
 import sellerRouter from './routes/sellerRoute.js'; // Import the seller router
 import productRouter from './routes/productRoute.js'; // Import the product router
 import cartRouter from './routes/cartRoute.js'; // Import the cart router
+import addressRouter from './routes/addressRoute.js'; // Import the address router
 
 
 
@@ -37,6 +38,8 @@ app.use('/api/seller', sellerRouter); // Use the seller router for seller-relate
 app.use('/api/product', productRouter); // Use the product router for product-related routes
 
 app.use('/api/cart', cartRouter); // Use the cart router for cart-related routes
+
+app.use('/api/address', addressRouter); // Use the address router for address-related routes
 
 
 app.listen(port, () => {
