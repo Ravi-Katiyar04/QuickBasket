@@ -9,14 +9,10 @@ export const updateCart = async (req, res) => {
 
         await User.findByIdAndUpdate(userId, { cartItems });
 
-        return res.status(200).json({ message: "Cart updated successfully" });
-
-        // Validate the input data
+        return res.json({success: true, message: "Cart updated successfully" });
         
     } catch (error) {
-
-        console.error("Error updating card:", error.message);
-        return res.status(500).json({ message: "Error updating card", error });
+        return res.json({success: false, message: error.message });
     }
 
 }

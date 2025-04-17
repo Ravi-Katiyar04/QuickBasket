@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
     category: {
-        type: Array,
+        type: String,
         required: true,
     },
     image: {
@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-}, {Timestamps: true});
+}, {timestamps: true});
 
 const Product = mongoose.models.product || mongoose.model('product', productSchema);
 

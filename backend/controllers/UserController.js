@@ -99,9 +99,9 @@ export const logout= async (req, res) => {
             sameSite:process.env.NODE_ENV === "production" ? "none" : "strict",
             expires: new Date(Date.now()),
         });
-        return res.status(200).json({ message: "Logout successful" });
+        return res.json({success: true, message: "Logout successful" });
     } catch (error) {
         console.error("Error logging out:", error.message);
-        res.status(500).json({success:false, message: error.message });
+        res.json({success:false, message: error.message });
     }
 }

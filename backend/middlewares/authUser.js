@@ -2,7 +2,11 @@
 import jwt from "jsonwebtoken";
 
 const authUser = (req, res, next) => {
+    
+    // Check if the request has cookies
     const { token } = req.cookies;
+
+    // Check if the token is present in the request cookies
     if (!token) {
         return res.status(401).json({ message: "Unauthorized User" });
     }
@@ -14,7 +18,7 @@ const authUser = (req, res, next) => {
             // Instead of setting req.body.userId, assign directly to req.userId
             req.userId = decoded.id;
         } else {
-            return res.status(401).json({ message: "Unauthorized User" });
+            return res.status(401).json({success: false, message: "Unauthorized User" });
         }
         return next();
     } catch (error) {
