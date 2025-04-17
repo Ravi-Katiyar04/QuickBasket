@@ -40,7 +40,7 @@ export const getUserOrders = async (req, res) => {
         res.json({success: true, orders: orders});
     } catch (error) {
         console.error("Error fetching orders:", error.message);
-        return res.json({success: false, message: "Error fetching orders", error });
+        return res.json({success: false, message: error.message });
     }
 }
 
@@ -48,9 +48,9 @@ export const getUserOrders = async (req, res) => {
 export const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find( {$or: [{ paymentType: "cod" }, { isPaid: "true" }]}).populate("items.product").populate("address").sort({ createdAt: -1 });
-        res.status(200).json(orders);
+        res.json({success: true, orders: orders});
     } catch (error) {
         console.error("Error fetching orders:", error.message);
-        return res.status(500).json({ message: "Error fetching orders", error });
+        return res.json({ success: false, message: error,message });
     }
 }
