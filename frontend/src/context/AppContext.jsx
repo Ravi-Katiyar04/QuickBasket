@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 
+axios.defaults.withCredentials = true;
+
+// Set the base URL for axios requests
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 // Create a context for the app
+
 // This context will be used to share state and functions across the application
 export const AppContext = createContext();
 
@@ -19,6 +24,21 @@ export const AppContextProvider = ({ children }) => {
 
     const [cartItems, setCartItems] = useState({})
     const [searchQuery, setSearchQuery] = useState({})
+
+
+    const fetchSeller = async () => {
+        try {
+            const { data } = await axios.get("/api/seller/is-auth");
+            if (data.success) {
+                setIsSellar(true);
+            }else{
+                setIsSellar(false);
+            }
+        } catch (error) {
+            setIsSellar(false);
+            console.error("Error fetching seller authentication:", error.message);
+        }
+    }
 
 
     const getCartCount = () => {
@@ -38,7 +58,17 @@ export const AppContextProvider = ({ children }) => {
     }
 
     const fetchProducts = async () => {
-        setProducts(dummyProducts);
+        try {
+            const { data } = await axios.get("/api/product/list");
+            if (data.success) {
+                setProducts(data.products);
+            } else {
+                toast.error(data.message);
+            }   
+        } catch (error) {
+            toast.error(error.message)
+        }
+
     }
 
     const addToCard= (itemId) => {
@@ -77,6 +107,7 @@ export const AppContextProvider = ({ children }) => {
 
     useEffect(() => {
         fetchProducts();
+        fetchSeller();
     }, [])
     
     const value = {
@@ -97,6 +128,8 @@ export const AppContextProvider = ({ children }) => {
         setSearchQuery, 
         getCartCount,
         getTotalPrice,
+        axios,
+        fetchProducts
     };
 
     return (

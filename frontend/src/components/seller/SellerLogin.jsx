@@ -1,16 +1,32 @@
 
 import { useState, useEffect } from 'react'
 import { useAppCOntext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 
 const SellerLogin = () => {
     const [state, setState] = useState("login");
-    const {isSellar, setIsSellar, navigate} = useAppCOntext();
+    const { isSellar, setIsSellar, navigate, axios } = useAppCOntext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const onSubmitHandler = async (e) => {
-        e.preventDefault();
-        setIsSellar(true);
+        try {
+            e.preventDefault();
+            const { data } = await axios.post('/api/seller/login', {
+                email,
+                password
+            });
+            console.log(data);
+            if (data.success === true) {
+                toast.success(data.message);
+                setIsSellar(true);
+                navigate("/seller");
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
     }
 
     useEffect(() => {
@@ -19,7 +35,7 @@ const SellerLogin = () => {
         }
     }, [isSellar]);
 
-    
+
 
     return !isSellar && (
         <div className='fixed top-0 bottom-0 left--0 w-full left-0 z-30 flex items-center text-sm text-gray-600 bg-slate-300'>
@@ -27,7 +43,7 @@ const SellerLogin = () => {
                 <p className="text-2xl font-medium m-auto">
                     <span className="text-primary">Seller</span> {state === "login" ? "Login" : "Sign Up"}
                 </p>
-                
+
                 <div className="w-full ">
                     <p>Email</p>
                     <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />

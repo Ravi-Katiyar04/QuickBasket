@@ -21,7 +21,7 @@ export const addProduct = async (req, res) => {
             image: imagesURl,
         });
 
-        res.status(200).json({ message: "Product added successfully" });
+        res.json({success: true, message: "Product added successfully" });
 
     } catch (error) {
         console.error("Error adding product:", error.message);
@@ -33,7 +33,7 @@ export const addProduct = async (req, res) => {
 export const productList = async (req, res) => {
     try {
         const products = await Product.find({});
-        res.status(200).json(products);
+        res.status(200).json({success:true , products: products});
 
     } catch (error) {
         console.error("Error fetching products:", error.message);
@@ -56,12 +56,13 @@ export const productById = async (req, res) => {
 
 export const changeStock = async (req, res) => {
     try {
-        const {id, instock} = req.body;
-        await Product.findByIdAndUpdate(id, { instock });
-        res.status(200).json({ message: "Stock updated successfully" });
+        const {id, inStock} = req.body;
+        console.log(id, inStock);
+        await Product.findByIdAndUpdate(id, { inStock });
+        res.json({ success:true, message: "Stock updated successfully" });
     } catch (error) {
         console.error("Error updating stock:", error.message);
-        return res.status(500).json({ message: "Error updating stock", error });
+        return res.json({success:true, message: error.message });
     }
 
 }
